@@ -35,12 +35,12 @@ class Pet(QLabel):
         """Open an image from the assets folder and resize it."""
         path = config.ASSETS_DIR / file_name
         if not path.exists():
-         raise FileNotFoundError("Missing image file: " + str(path))
+            raise FileNotFoundError("Missing image file: " + str(path))
         
 
         picture = QPixmap(str(path))
         return picture.scaled(config.PET_WIDTH, config.PET_HEIGHT,
-                              Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                          Qt.KeepAspectRatio, Qt.SmoothTransformation)
 
     def place_in_corner(self):
         """Put the pet in the bottom right corner of the screen."""
@@ -65,16 +65,16 @@ class Pet(QLabel):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-           mouse_position = event.globalPosition().toPoint()
-           self.drag_offset = mouse_position - self.frameGeometry().topLeft()
-        elif event.button() == Qt.RightButton:
+            mouse_position = event.globalPosition().toPoint()
+            self.drag_offset = mouse_position - self.frameGeometry().topLeft()
+        elif event.button() == Qt.RightButton:        #for closing
+             self.close()
 
+    def mouseMoveEvent(self, event):      
+        if event.buttons() & Qt.LeftButton:
+            mouse_position = event.globalPosition().toPoint()       #mouse follow
+            new_position = mouse_position - self.drag_offset
+            self.move(new_position)
 
-         def mouseMoveEvent(self, event):      
-          if event.buttons() & Qt.LeftButton:
-           mouse_position = event.globalPosition().toPoint()       #mouse follow
-           new_position = mouse_position - self.drag_offset
-           self.move(new_position)
-
-           self.base_x = new_position.x()             #stays at mouse position
-           self.base_y = new_position.y() + self.bob_offset
+            self.base_x = new_position.x()             #stays at mouse position
+            self.base_y = new_position.y() + self.bob_offset
