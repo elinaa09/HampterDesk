@@ -1,5 +1,3 @@
-from sys import path
-
 from PySide6.QtWidgets import QLabel
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QTimer, Qt, QPoint
@@ -38,10 +36,10 @@ class Pet(QLabel):
         path = config.ASSETS_DIR / file_name
         if not path.exists():
          raise FileNotFoundError("Missing image file: " + str(path))
-        return QPixmap(str(path))
+        
 
-    picture = QPixmap(str(path))
-    picture.scaled(config.PET_WIDTH, config.PET_HEIGHT,
+        picture = QPixmap(str(path))
+        return picture.scaled(config.PET_WIDTH, config.PET_HEIGHT,
                               Qt.KeepAspectRatio, Qt.SmoothTransformation)
 
     def place_in_corner(self):
@@ -65,18 +63,18 @@ class Pet(QLabel):
 
         self.move(self.base_x, self.base_y - self.bob_offset)
 
-        def mousePressEvent(self, event):
-            if event.button() == Qt.LeftButton:
-               mouse_position = event.globalPosition().toPoint()
-               self.drag_offset = mouse_position - self.frameGeometry().topLeft()
-            elif event.button() == Qt.RightButton:
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+           mouse_position = event.globalPosition().toPoint()
+           self.drag_offset = mouse_position - self.frameGeometry().topLeft()
+        elif event.button() == Qt.RightButton:
 
 
-             def mouseMoveEvent(self, event):      
-              if event.buttons() & Qt.LeftButton:
-               mouse_position = event.globalPosition().toPoint()       #mouse follow
-               new_position = mouse_position - self.drag_offset
-               self.move(new_position)
+         def mouseMoveEvent(self, event):      
+          if event.buttons() & Qt.LeftButton:
+           mouse_position = event.globalPosition().toPoint()       #mouse follow
+           new_position = mouse_position - self.drag_offset
+           self.move(new_position)
 
-               self.base_x = new_position.x()             #stays at mouse position
-               self.base_y = new_position.y() + self.bob_offset
+           self.base_x = new_position.x()             #stays at mouse position
+           self.base_y = new_position.y() + self.bob_offset
