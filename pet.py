@@ -16,7 +16,7 @@ class Pet(QLabel):
 
         self.setAttribute(Qt.WA_TranslucentBackground)
 
-        self.resize(config.PET_WIDTH, config.PET_HEIGHT)       #pets size on its window
+        self.resize(config.PET_WIDTH, config.PET_HEIGHT)       
         self.setAlignment(Qt.AlignHCenter | Qt.AlignBottom)
 
         self.base_x = 0         #pet rests in this position
@@ -33,7 +33,6 @@ class Pet(QLabel):
 
       
         self.is_sad = False
-        self.music_playing = False
         self.is_dragging = False
         self.show_state("idle")
 
@@ -58,10 +57,6 @@ class Pet(QLabel):
         self.key_timer = QTimer()
         self.key_timer.timeout.connect(self.check_keys)
         self.key_timer.start(config.KEY_CHECK_DELAY)
-
-        self.music_timer = QTimer()
-        self.music_playing.setSingleShot(True)
-        self.music_timer.start(config.MUSIC_CHECK_DELAY)
 
         self.lonely_timer = QTimer()
         self.lonely_timer.setSingleShot(True)
@@ -100,8 +95,6 @@ class Pet(QLabel):
      def go_back_to_rest(self):
         if self.is_sad:
             self.show_state("sad")
-        elif self.music_playing:
-            self.show_state("music")
         else:
             self.show_state("idle")
             
@@ -127,20 +120,6 @@ class Pet(QLabel):
         self.show_state("laugh")
         QTimer.singleShot(config.CLICK_TIME, self.go_idle)
 
-    
-     def get_music(self):
-        self.pet_state = "music"
-        self.show_state("music")
-        self.music_timer = QTimer()
-        self.music_timer.timeout.connect(self.check_music)
-        self.music_timer.start(config.MUSIC_CHECK_DELAY)
-        
-
-     def check_music(self):
-        self.music_playing = sensors.is_music_playing()
-
-        if self.pet_state == "idle" or self.pet_state == "music":
-         self.go_back_to_rest()
 
 
      def check_keys(self):
@@ -175,7 +154,7 @@ class Pet(QLabel):
      def mouseMoveEvent(self, event):      
         if event.buttons() & Qt.LeftButton:
             self.is_dragging = True
-            mouse_position = event.globalPosition().toPoint()     #mouse follow
+            mouse_position = event.globalPosition().toPoint()   
             new_position = mouse_position - self.drag_offset
             self.move(new_position)
 
