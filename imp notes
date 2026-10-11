@@ -3,13 +3,13 @@ source .venv/bin/activate
 python main.py
 
 
-checks:
-n=$(grep -n "def mousePressEvent" pet.py | cut -d: -f1)
-sed -i "${n},\$s/^    //" pet.py
-
-python -m py_compile pet.py && echo "pet.py is OK"
-grep -n "^    def " pet.py
-
 pip install pynput
+
 sudo apt install -y playerctl
 printf 'PySide6\npynput\n' > requirements.txt
+
+pip install PySide6 
+
+pip install pynput
+
+pip install pycaw
